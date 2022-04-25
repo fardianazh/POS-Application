@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Supplier;
-use App\Models\Product;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,18 +16,24 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $suppliers = Supplier::all();
-
-        return view('admin.product', compact('categories','suppliers'));
+        return view('admin.user');
     }
 
     public function api()
     {
-        $products = Product::with(['supplier','category'])->get();
-        $datatables = datatables()->of($products)->addIndexColumn();
+        $users = User::with('roles')->get();
+        $datatables = datatables()->of($users)->addIndexColumn();
 
         return $datatables->make(true);
+    }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
     }
 
     /**
@@ -48,6 +54,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+        
         $validatedData = $request->validate([
             'name' => 'required',
             'category_id' => 'required',
@@ -65,10 +77,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(User $user)
     {
         //
     }
@@ -76,10 +88,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(User $user)
     {
         //
     }
@@ -88,33 +100,37 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, User $user)
     {
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'qty'=> 'required',
-            'price' => 'required',
-        ]);
-
-        $product->update($request->all());
-
-        return redirect('product');
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(User $user)
     {
-        $product->category()->supplier()->delete();
+        //
+    }
 
-        return redirect('product');
+    public function spatie(){
+        // $role = Role::create(['name' => 'Employee']);
+        // $permission = Permission::create(['name' => 'Transaction']);
+
+        // $role->givePermissionTo($permission);
+        // $permission->assignRole($role);
+
+        // $user = auth()->user();
+        // $user->assignRole('Super Admin');
+        // return $user;
+
+        // $user = User::with('roles')->get();
+        // return $user;
     }
 }

@@ -13,8 +13,7 @@ class CategoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        
+    {    
         return view('admin.category');
     }
 
@@ -45,7 +44,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:5',
+            'name' => 'required',
         ]);
 
         Category::create($request->all());
@@ -85,7 +84,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validatedData = $request->validate([
-            'name' => 'required|min:5',
+            'name' => 'required',
         ]);
 
         $category->update($request->all());
@@ -101,7 +100,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->products()->delete();
+        $category->delete();
 
         return redirect('category');
     }

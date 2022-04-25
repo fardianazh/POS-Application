@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+@section ('title', 'REGISTER')
 
 @section('content')
 <div class="container">
@@ -40,6 +41,17 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="roles" class="col-md-4 col-form-label text-md-end">{{ __('Roles') }}</label>
+                            <div class="col-md-6">
+                                <select name="roles" class="form-control">\
+                                    <option value="" hidden null>-- Select Roles --</option>
+                                    <option value="Manager">Manager</option>
+                                    <option value="Employee">Employee</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
@@ -61,11 +73,15 @@
                             </div>
                         </div>
 
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
+                        <div class="row mb-3">
+                            <div class="col-md-2 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
+                            </div>
+
+                            <div class="col-md-1">
+                                <a href="{{ url('home') }}" class="btn btn-primary">Cancel</a>
                             </div>
                         </div>
                     </form>

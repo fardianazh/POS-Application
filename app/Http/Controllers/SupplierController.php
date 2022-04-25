@@ -17,6 +17,14 @@ class SupplierController extends Controller
         return view('admin.supplier');
     }
 
+    public function api()
+    {
+        $suppliers = Supplier::all();
+        $datatables = datatables()->of($suppliers)->addIndexColumn();
+
+        return $datatables->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -35,7 +43,15 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'address' => 'required|min:5',
+            'description' => 'required',
+        ]);
+
+        Supplier::create($request->all());
+
+        return redirect('supplier');
     }
 
     /**
@@ -69,7 +85,15 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'address' => 'required|min:5',
+            'description' => 'required',
+        ]);
+
+        $supplier->update($request->all());
+
+        return redirect('supplier');
     }
 
     /**
@@ -80,6 +104,8 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+
+        return redirect('supplier');
     }
 }

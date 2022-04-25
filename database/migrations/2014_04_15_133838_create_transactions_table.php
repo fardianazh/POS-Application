@@ -18,11 +18,11 @@ return new class extends Migration
             $table->integer('qty');
             $table->boolean('status')->default(0);
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 

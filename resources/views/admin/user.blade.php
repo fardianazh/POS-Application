@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section ('header', 'Category')
+@section ('header', 'User')
 
 @section('css')
 <!-- DataTables -->
@@ -23,7 +23,9 @@
                             <tr>
                                 <th style="width: 80px">No.</th>
                                 <th class="text-center">Name</th>
-                                <th style="width: 400px" class="text-center">Action</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Role</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                     </table>
@@ -37,7 +39,7 @@
                 <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event, data.id)">
                     <div class="modal-header">
 
-                        <h4 class="modal-title">Category</h4>
+                        <h4 class="modal-title">User</h4>
 
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -51,6 +53,14 @@
                         <div class="form-group">
                             <label>Name</label>
                             <input placeholder="Min 5 Character" type="text" class="form-control" name="name" :value="data.name" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input placeholder="Min 5 Character" type="email" class="form-control" name="email" :value="data.email" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input placeholder="Min 5 Character" type="password" class="form-control" name="password" :value="" required="">
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -78,12 +88,14 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
 <script type="text/javascript">
-      var actionUrl = '{{ url('category') }}';
-      var apiUrl = '{{ url('api/category') }}';
+      var actionUrl = '{{ url('user') }}';
+      var apiUrl = '{{ url('api/user') }}';
 
       var columns = [
       {data: 'DT_RowIndex', class: 'text-center', orderable: true},
       {data: 'name', class: 'text-center', orderable: true},
+      {data: 'email', class: 'text-center', orderable: true},
+      {data: 'roles', class: 'text-center', orderable: true},
       {render: function (index, row, data, meta){
         return `
         <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">

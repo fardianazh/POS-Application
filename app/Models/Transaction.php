@@ -13,11 +13,11 @@ class Transaction extends Model
         return $this->belongsTo('App\Models\Product', 'product_id');
     }
 
-    public function transactions(){
-        return $this->hasMany('App\Models\Transaction', 'customer_id');
-    }
-
     public function transactionDetail(){
         return $this->hasOne('App\Models\TransactionDetail', 'transaction_id');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'user_id');
     }
 }

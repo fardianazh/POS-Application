@@ -23,7 +23,7 @@
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__wobble" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__wobble" src="{{ asset('assets/dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -89,22 +89,32 @@
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+                </div>
                     <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
+                        <a href="#" class="d-block">{{ auth()->user()->name }}</a>
                     </div>
                 </div>
 
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                        data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="{{ url('home') }}" class="nav-link">
+                        <li class="nav-item">
+                            <a href="{{ url('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Dashboard
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link {{ request()->is('customer') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-person"></i>
+                                <p>
+                                    User
                                 </p>
                             </a>
                         </li>
@@ -118,28 +128,28 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ url('product') }}" class="nav-link">
+                                    <a href="{{ url('product') }}" class="nav-link {{ request()->is('product') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Product</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('category') }}" class="nav-link">
+                                    <a href="{{ url('category') }}" class="nav-link {{ request()->is('category') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Category</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ url('supplier') }}" class="nav-link">
+                                    <a href="{{ url('supplier') }}" class="nav-link {{ request()->is('supplier') ? 'active' : '' }}">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Supplier</p>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item menu-open">
-                            <a href="{{ url('transaction') }}" class="nav-link">
-                                <i class="fa-solid fa-basket-shopping"></i>
+                        <li class="nav-item">
+                            <a href="{{ url('transaction') }}" class="nav-link {{ request()->is('transaction') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-basket-shopping"></i>
                                 <p>
                                     Transaction
                                 </p>
@@ -159,7 +169,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">Dashboard</h1>
+                            <h1 class="m-0">@yield('header')</h1>
                         </div>
                     </div>
                 </div><!-- /.container-fluid -->
@@ -206,17 +216,19 @@
     <script src="{{ asset('assets/plugins/raphael/raphael.min.js')}}"></script>
     <script src="{{ asset('assets/plugins/jquery-mapael/jquery.mapael.min.js')}}"></script>
     <script src="{{ asset('assets/plugins/jquery-mapael/maps/usa_states.min.js')}}"></script>
-    <!-- ChartJS -->
-    <script src="{{ asset('assets/plugins/chart.js/Chart.min.js')}}"></script>
+    <!-- ChartJS
+    <script src="{{ asset('assets/plugins/chart.js/Chart.min.js')}}"></script> -->
 
-    <!-- AdminLTE for demo purposes -->
+    <!-- AdminLTE for demo purposes
     <script src="{{ asset('assets/dist/js/demo.js')}}"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="{{ asset('assets/dist/js/pages/dashboard2.js')}}"></script>
+    AdminLTE dashboard demo (This is only for demo purposes)
+    <script src="{{ asset('assets/dist/js/pages/dashboard2.js')}}"></script> -->
     <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <!-- Axios -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/59fb85c0dc.js" crossorigin="anonymous"></script>
     @yield('js')
 </body>
 

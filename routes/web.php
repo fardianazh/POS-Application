@@ -21,16 +21,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::get('/api/customer', [App\Http\Controllers\CustomerController::class, 'api']);
 Route::get('/api/category', [App\Http\Controllers\CategoryController::class, 'api']);
 Route::get('/api/product', [App\Http\Controllers\ProductController::class, 'api']);
 Route::get('/api/transaction', [App\Http\Controllers\TransactionController::class, 'api']);
 Route::get('/api/supplier', [App\Http\Controllers\SupplierController::class, 'api']);
+Route::get('/api/user', [App\Http\Controllers\UserController::class, 'api']);
 
-Route::resource('/customer', App\Http\Controllers\CustomerController::class);
 Route::resource('/category', App\Http\Controllers\CategoryController::class);
 Route::resource('/product', App\Http\Controllers\ProductController::class);
 Route::resource('/transaction', App\Http\Controllers\TransactionController::class);
 Route::resource('/supplier', App\Http\Controllers\SupplierController::class);
+Route::resource('/user', App\Http\Controllers\UserController::class);
 
-// Route::get('/test_spatie/home', [App\Http\Controllers\HomeController::class, 'test_spatie']);
+// Route::get('/spatie/user', [App\Http\Controllers\UserController::class, 'spatie']);
