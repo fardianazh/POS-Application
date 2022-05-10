@@ -45,7 +45,9 @@
                             <div class="col-md-6">
                                 <select name="roles" class="form-control">\
                                     <option value="" hidden null>-- Select Roles --</option>
+                                    @role('Super Admin')
                                     <option value="Manager">Manager</option>
+                                    @endrole
                                     <option value="Employee">Employee</option>
                                 </select>
                             </div>

@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section ('header', 'User')
+@section ('header', 'User List')
 
 @section('css')
 <!-- DataTables -->
@@ -13,9 +13,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+            
                 <div class="card-header">
-                    <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Category</a>
+                    <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Supplier</a>
                 </div>
+              
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="datatable" class="table table-stripted table-bordered">
@@ -33,14 +35,15 @@
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event, data.id)">
                     <div class="modal-header">
 
-                        <h4 class="modal-title">User</h4>
-
+                        <h4 class="modal-title">Supplier</h4>
+    
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -52,15 +55,15 @@
 
                         <div class="form-group">
                             <label>Name</label>
-                            <input placeholder="Min 5 Character" type="text" class="form-control" name="name" :value="data.name" required="">
+                            <input placeholder="Name" type="text" class="form-control" name="name" :value="data.name" required="">
                         </div>
                         <div class="form-group">
                             <label>Email</label>
-                            <input placeholder="Min 5 Character" type="email" class="form-control" name="email" :value="data.email" required="">
+                            <input placeholder="Email" type="text" class="form-control" name="email" :value="data.email" required="">
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input placeholder="Min 5 Character" type="password" class="form-control" name="password" :value="" required="">
+                            <label>Roles</label>
+                            <input placeholder="Description of Supplier Products" type="text" class="form-control" name="description" :value="data.description" required="">
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -69,6 +72,7 @@
                 </form>
             </div>
         </div>
+        
     </div>
 </div>
 @endsection
@@ -95,7 +99,7 @@
       {data: 'DT_RowIndex', class: 'text-center', orderable: true},
       {data: 'name', class: 'text-center', orderable: true},
       {data: 'email', class: 'text-center', orderable: true},
-      {data: 'roles', class: 'text-center', orderable: true},
+      {data: 'pivot', class: 'text-center', orderable: true},
       {render: function (index, row, data, meta){
         return `
         <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">

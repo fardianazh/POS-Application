@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section ('header', 'Transaction')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('css')
 <!-- DataTables -->
 <link rel="stylesheet" href="{{ asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -10,56 +10,146 @@
 
 @section('content')
 <div id="controller">
-    <div class="row">
-        <div class="col-12">
+<div class="row">
+        <div class="col-9">
             <div class="card">
-                <div class="card-header">
-                    <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Member</a>
-                </div>
-                <!-- /.card-header -->
+              <div class="card-header">
+                  <strong>No Invoice: </strong>{{ request()->segment(2) }}
+              </div>
                 <div class="card-body">
-                    <table id="datatable" class="table table-stripted table-bordered">
+                    <table class="table table-stripted table-bordered">
                         <thead>
                             <tr>
                                 <th style="width: 80px">No.</th>
-                                <th class="text-center">Name</th>
-                                <th style="width: 400px" class="text-center">Action</th>
+                                <th class="text-center">Name Product</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-center">Total Price</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
+                        <tbody>
+                          @php
+                            $no = 1;
+                            $total_payment = 0;
+                          @endphp
+                          @foreach($transactions as $item)
+                          <tr>
+                            <td>{{ $no++ }}</td>
+                            <td>{{ $item->product->name }}</td>
+                            <td>{{ rupiah($item->product->price) }}</td>
+                            <td>{{ $item->qty }}</td>
+                            <td>{{ rupiah($item->total_price) }}</td>
+                            <td>
+                              <a href="{{ url('transaction/add_qty') }}/{{ $item->transaction_id }}" class="btn btn-success btn-sm">
+                                <i class="fas fa-plus"></i>
+                              </a>
+                              <a href="{{ url('transaction/minus_qty') }}/{{ $item->transaction_id }}" class="btn btn-warning text-white btn-sm">
+                                <i class="fas fa-minus"></i>
+                              </a>
+                              <a href="{{ url('transaction/delete') }}/{{ $item->transaction_id }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                <i class="fas fa-trash"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          @php
+                            $total_payment = $total_payment + $item->total_price;
+                          @endphp
+                          @endforeach
+                        </tbody>
                     </table>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="post" :action="actionUrl" autocomplete="off" @submit="submitForm($event, data.id)">
-                    <div class="modal-header">
 
-                        <h4 class="modal-title">Category</h4>
+        <div class="col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <label for="date">Add Product</label>
+            </div>
+            <div class="card-body">
+                <form action="{{ url('transaction') }}" method="post">
+                  @csrf
+                    <div class="row mb-3" hidden>
+                        <label class="col-md-4 col-form-label text-md-end">Code</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="code_transaction" value="{{ request()->segment(2) }}">
+                        </div>
+                    </div>
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                    <div class="row mb-3" hidden>
+                        <label class="col-md-4 col-form-label text-md-end">User</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" name="user_id" value="{{ auth()->user()->id }}">
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">Name Product</label>
+                        <div class="col-md-8">
+                            <select name="product_id" class="form-control">
+                                @foreach($products as $product)
+                                <option value="{{ $product->id }}">
+                                    {{ $product->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">Qty</label>
+                        <div class="col-md-8">
+                            <input type="number" name="qty" value="1" min="1" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 offset-md-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="nav-icon fa-solid fa-basket-shopping"></i> Add
                         </button>
                     </div>
-                    <div class="modal-body">
-                        @csrf
-
-                        <input type="hidden" name="_method" value="PUT" v-if="editStatus">
-
-                        <div class="form-group">
-                            <label>Name</label>
-                            <input placeholder="Min 5 Character" type="text" class="form-control" name="name" :value="data.name" required="">
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-default">Save Changes</button>
-                        </div>
                 </form>
+
+                <hr>
+                    <label for="date">Payment</label>
+                <hr>
+                <form name="form-save-transaction">
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">Total Price</label>
+                        <div class="col-md-8">
+                            <input type="hidden" name="" id="code_transaction" value="{{ request()->segment(2) }}">
+                            <input type="text" name="" class="form-control" value="{{ rupiah($total_payment) }}" readonly>
+                            <input type="hidden" name="total_payment" id="total_payment" value="{{ $total_payment }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">Payment</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="payment" class="form-control" autocomplete="off" onkeyup="calculate()" required>
+                            <input type="hidden" name="payment" id="payment1">
+                        </div>
+                    </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-md-4 col-form-label text-md-end">Change</label>
+                        <div class="col-md-8">
+                            <input type="text" name="" id="change" class="form-control" readonly>
+                            <input type="hidden" name="change" id="change1" >
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 offset-md-4">
+                        <button type="button" class="btn btn-primary" id="btnSaveTransaction">
+                            <i class="nav-icon fa-solid fa-basket-shopping"></i> Save Transaction
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
 
@@ -77,78 +167,46 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-<script type="text/javascript">
-      var actionUrl = '{{ url('category') }}';
-      var apiUrl = '{{ url('api/category') }}';
+<script type="text/javascript"> 
+var urlStruk = '{{ url('transaction/struk/') }}';
 
-      var columns = [
-      {data: 'DT_RowIndex', class: 'text-center', orderable: true},
-      {data: 'name', class: 'text-center', orderable: true},
-      {render: function (index, row, data, meta){
-        return `
-        <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">
-        Edit
-        </a>
-        <a class="btn btn-danger btn-sm" onclick="controller.deleteData(event, ${data.id})">
-        Delete
-        </a>`;
-          }, orderable: false, width: '200px', class: 'text-center'},
-    ];
-</script>
-<script type="text/javascript">
-    var controller = new Vue({
-    el: '#controller',
+function calculate(){
+  let payment = $('#payment').val().split('.');
+  let payment1 = $('#payment1').val(payment.join(""));
+
+  let total_payment = $('#total_payment').val();
+  let results = payment1.val() - total_payment;
+  let convert = parseInt(results).toLocaleString("id-ID");
+
+  $('#change').val(convert);
+  $('#change1').val(results);
+}
+
+$(document).on('click', '#btnSaveTransaction', function(){
+  let _token = $('meta[name="csrf-token"]').attr('content');
+  let code_transaction = $('#code_transaction').val();
+  let total_payment = $('#total_payment').val();
+  let payment1 = $('#payment1').val();
+  let change1 = $('#change1').val();
+
+  $.ajax({
+    url:'{{ url('transaction/save_transaction') }}',
+    type: 'post',
     data: {
-      datas: [],
-      data: {},
-      actionUrl,
-      apiUrl,
-      editStatus: false,
+      _token: _token,
+      code_transaction: code_transaction,
+      total_payment: total_payment,
+      payment: payment1,
+      change: change1,
     },
-    mounted: function(){
-      this.datatable();
-    },
-    methods: {
-      datatable() {
-        const _this = this;
-        _this.table = $('#datatable').DataTable({
-          ajax: {
-            url: _this.apiUrl,
-            type: 'GET',
-          },
-          columns
-        }).on('xhr', function() {
-          _this.datas = _this.table.ajax.json().data;
-        });
-      },
-      addData() {
-      this.data = {};
-      this.editStatus = false;
-        $('#modal-default').modal();
-     },
-     editData(event, row) {
-        this.data = this.datas[row];
-        this.editStatus = true;
-        $('#modal-default').modal();
-     },
-     deleteData(event, id) {
-        if (confirm("Are you sure?")) {
-          $(event.target).parents('tr').remove();
-          axios.post(this.actionUrl+'/'+id, {_method: 'DELETE'}).then(response =>{
-            alert('Data has been removed');
-          });
-        }
-     },
-     submitForm(event, id){
-       event.preventDefault();
-       const _this = this;
-       var actionUrl = ! this.editStatus ? this.actionUrl : this.actionUrl+'/'+id;
-       axios.post(actionUrl, new FormData($(event.target)[0])).then(response => {
-         $('#modal-default').modal('hide');
-         _this.table.ajax.reload();
-       });
-     },
-   }
+    success: function(result){
+      if (result.success == true){
+        alert(result.message);
+        window.open('/eduwork/bajuku/public/transaction/struk/' + code_transaction, '_blank');
+        window.location.href = '/eduwork/bajuku/public/transaction/{{no_invoice()}}';
+      }
+    }
   });
-  </script>
+});
+</script>
 @endsection

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -20,20 +21,12 @@ class UserController extends Controller
     }
 
     public function api()
-    {
+    {   
         $users = User::with('roles')->get();
-        $datatables = datatables()->of($users)->addIndexColumn();
-
+        $datatables = datatables()->of($users)->addColumn('RoleName',function($users){
+            return $users->pivot;
+            })->addIndexColumn();
         return $datatables->make(true);
-    }
-
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
     }
 
     /**
@@ -54,24 +47,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        
-        $validatedData = $request->validate([
-            'name' => 'required',
-            'category_id' => 'required',
-            'supplier_id' => 'required',
-            'description' => 'required',
-            'qty'=> 'required',
-            'price' => 'required',
-        ]);
 
-        Book::create($request->all());
-
-        return redirect('book');
     }
 
     /**

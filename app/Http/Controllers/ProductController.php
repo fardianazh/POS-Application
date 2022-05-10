@@ -57,9 +57,9 @@ class ProductController extends Controller
             'price' => 'required',
         ]);
 
-        Book::create($request->all());
+        Product::create($request->all());
 
-        return redirect('book');
+        return redirect('product');
     }
 
     /**

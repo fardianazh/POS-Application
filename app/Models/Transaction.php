@@ -9,12 +9,10 @@ class Transaction extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['total_price','user_id','qty','product_id'];
+
     public function product(){
         return $this->belongsTo('App\Models\Product', 'product_id');
-    }
-
-    public function transactionDetail(){
-        return $this->hasOne('App\Models\TransactionDetail', 'transaction_id');
     }
 
     public function user(){

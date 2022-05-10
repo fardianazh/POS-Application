@@ -13,9 +13,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+            
                 <div class="card-header">
                     <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Product</a>
                 </div>
+                
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="datatable" class="table table-stripted table-bordered">
@@ -36,6 +38,7 @@
             </div>
         </div>
     </div>
+    
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -78,8 +81,8 @@
                             <input placeholder="Description of Product" type="text" class="form-control" name="description" :value="data.description" required="">
                         </div>
                         <div class="form-group">
-                            <label>Qty</label>
-                            <input placeholder="Qty of Product" type="text" class="form-control" name="qty" :value="data.qty" required="">
+                            <label>Stock</label>
+                            <input placeholder="Stock of Product" type="text" class="form-control" name="tock" :value="data.stock" required="">
                         </div>
                         <div class="form-group">
                             <label>Price</label>
@@ -92,6 +95,7 @@
                 </form>
             </div>
         </div>
+        
     </div>
 </div>
 @endsection
@@ -120,16 +124,20 @@
       {data: 'category.name', class: 'text-center', orderable: true},
       {data: 'supplier.name', class: 'text-center', orderable: true},
       {data: 'description', class: 'text-center', orderable: true},
-      {data: 'qty', class: 'text-center', orderable: true},
+      {data: 'stock', class: 'text-center', orderable: true},
       {data: 'price', class: 'text-center', orderable: true},
       {render: function (index, row, data, meta){
         return `
+        @hasanyrole('Super Admin|Manager')
         <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">
         Edit
         </a>
         <a class="btn btn-danger btn-sm" onclick="controller.deleteData(event, ${data.id})">
         Delete
-        </a>`;
+        </a>
+        @else
+        <b>Dont Have Permission
+        @endhasanyrole`;
           }, orderable: false, width: '200px', class: 'text-center'},
     ];
 </script>

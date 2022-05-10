@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('transaction_details', function (Blueprint $table) {
             $table->id();
-            $table->integer('total_price');
-            $table->unsignedBigInteger('transaction_id');
+            $table->string('code_transaction', 100);
+            $table->integer('total_payment');
+            $table->integer('payment');
+            $table->integer('change');
             $table->timestamps();
-
-            $table->foreign('transaction_id')->references('id')->on('transactions');
         });
     }
 

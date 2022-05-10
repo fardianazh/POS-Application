@@ -93,7 +93,7 @@
                     <img src="{{ asset('assets/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
                 </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+                    <a href="#" class="d-block">{{ auth()->user()->name }}</a>
                     </div>
                 </div>
 
@@ -102,8 +102,9 @@
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+                    @hasanyrole('Super Admin|Manager')
                         <li class="nav-item">
-                            <a href="{{ url('home') }}" class="nav-link {{ request()->is('home') ? 'active' : '' }}">
+                            <a href="{{ url('dailyreport') }}" class="nav-link {{ request()->is('dailyreport') ? 'active' : '' }}">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     Dashboard
@@ -118,6 +119,15 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{ url('user') }}" class="nav-link {{ request()->is('customer') ? 'active' : '' }}">
+                                <i class="nav-icon fa-solid fa-person"></i>
+                                <p>
+                                    User List
+                                </p>
+                            </a>
+                        </li>
+                        @endrole
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-edit"></i>
@@ -148,7 +158,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ url('transaction') }}" class="nav-link {{ request()->is('transaction') ? 'active' : '' }}">
+                            <a href="{{ url('transaction') }}/{{ no_invoice() }}" class="nav-link {{ request()->segment(1) == 'transaction' ? 'active' : '' }}">
                                 <i class="nav-icon fa-solid fa-basket-shopping"></i>
                                 <p>
                                     Transaction

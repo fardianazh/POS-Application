@@ -13,9 +13,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
+            @hasanyrole('Super Admin|Manager')
                 <div class="card-header">
                     <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Category</a>
                 </div>
+                @endhasanyrole
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="datatable" class="table table-stripted table-bordered">
@@ -31,6 +33,7 @@
             </div>
         </div>
     </div>
+    @hasanyrole('Super Admin|Manager')
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -45,7 +48,6 @@
                     </div>
                     <div class="modal-body">
                         @csrf
-
                         <input type="hidden" name="_method" value="PUT" v-if="editStatus">
 
                         <div class="form-group">
@@ -59,6 +61,7 @@
                 </form>
             </div>
         </div>
+        @endhasanyrole
     </div>
 </div>
 @endsection
@@ -86,12 +89,16 @@
       {data: 'name', class: 'text-center', orderable: true},
       {render: function (index, row, data, meta){
         return `
+        @hasanyrole('Super Admin|Manager')
         <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">
         Edit
         </a>
         <a class="btn btn-danger btn-sm" onclick="controller.deleteData(event, ${data.id})">
         Delete
-        </a>`;
+        </a>
+        @else
+        <b>Dont Have Permission
+        @endhasanyrole`;
           }, orderable: false, width: '200px', class: 'text-center'},
     ];
 </script>

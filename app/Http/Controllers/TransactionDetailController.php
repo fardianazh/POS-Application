@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TransactionDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class TransactionDetailController extends Controller
@@ -14,7 +15,7 @@ class TransactionDetailController extends Controller
      */
     public function index()
     {
-        //
+ 
     }
 
     /**

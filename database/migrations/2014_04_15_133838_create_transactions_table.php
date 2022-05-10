@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('code_transaction', 100);
             $table->integer('qty');
-            $table->boolean('status')->default(0);
+            $table->integer('total_price');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
