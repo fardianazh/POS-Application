@@ -25,7 +25,7 @@ class DailyReportController extends Controller
             $data_month = [];
 
             foreach (range(1,12) as $month) {
-                $data_month[] = Transaction::select(Transaction::raw("COUNT(*) as total"))->whereMonth('created_at', $month)->first()->total;
+                $data_month[] = Transaction::select(Transaction::raw("SUM(qty) as total"))->whereMonth('created_at', $month)->first()->total;
             }
 
             $data_bar[$key]['data'] = $data_month;
