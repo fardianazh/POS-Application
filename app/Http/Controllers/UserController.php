@@ -24,7 +24,7 @@ class UserController extends Controller
     {   
         $users = User::with('roles')->get();
         $datatables = datatables()->of($users)->addColumn('RoleName',function($users){
-            return $users->pivot;
+            return $users->getRoleNames();
             })->addIndexColumn();
         return $datatables->make(true);
     }

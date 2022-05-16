@@ -99,7 +99,7 @@
       {data: 'DT_RowIndex', class: 'text-center', orderable: true},
       {data: 'name', class: 'text-center', orderable: true},
       {data: 'email', class: 'text-center', orderable: true},
-      {data: 'pivot', class: 'text-center', orderable: true},
+      {data: 'RoleName', class: 'text-center', orderable: true},
       {render: function (index, row, data, meta){
         return `
         <a href="#" class="btn btn-warning btn-sm" onclick="controller.editData(event, ${meta.row})">

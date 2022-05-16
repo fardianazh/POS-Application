@@ -13,11 +13,11 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-            
+            @hasanyrole('Super Admin|Manager')
                 <div class="card-header">
                     <a href="#" @click="addData()" data-target="#modal-default" data-toggle="modal" class="btn btn-sm btn-primary pull-right">Create New Product</a>
                 </div>
-                
+                @endhasanyrole
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="datatable" class="table table-stripted table-bordered">
