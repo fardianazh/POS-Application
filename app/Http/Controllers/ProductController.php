@@ -53,7 +53,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'supplier_id' => 'required',
             'description' => 'required',
-            'qty'=> 'required',
+            'stock'=> 'required',
             'price' => 'required',
         ]);
 
@@ -96,7 +96,7 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'qty'=> 'required',
+            'stock'=> 'required',
             'price' => 'required',
         ]);
 
@@ -113,7 +113,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->category()->supplier()->delete();
+        $product->delete();
 
         return redirect('product');
     }

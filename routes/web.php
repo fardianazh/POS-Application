@@ -39,6 +39,6 @@ Route::post('/transaction/save_transaction', [App\Http\Controllers\TransactionCo
 Route::get('/transaction/add_qty/{transaction_id}', [App\Http\Controllers\TransactionController::class, 'add_qty']);
 Route::get('/transaction/minus_qty/{transaction_id}', [App\Http\Controllers\TransactionController::class, 'minus_qty']);
 Route::get('/transaction/delete/{transaction_id}', [App\Http\Controllers\TransactionController::class, 'delete']);
-Route::get('/transaction/struk/{code_transaction}', [App\Http\Controllers\TransactionController::class, 'struk']);
+Route::get('/transaction/struk/{code_transaction}', [App\Http\Controllers\TransactionController::class, 'struk'])->name('struk');
 
 // Route::get('/spatie/user', [App\Http\Controllers\UserController::class, 'spatie']);

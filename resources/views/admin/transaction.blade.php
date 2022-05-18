@@ -9,6 +9,7 @@
 @endsection
 
 @section('content')
+@include('sweetalert::alert')
 <div id="controller">
 <div class="row">
         <div class="col-9">
@@ -167,8 +168,7 @@
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script>
-<script type="text/javascript"> 
-var urlStruk = '{{ url('transaction/struk/') }}';
+<script type="text/javascript">
 
 function calculate(){
   let payment = $('#payment').val().split('.');
@@ -202,8 +202,8 @@ $(document).on('click', '#btnSaveTransaction', function(){
     success: function(result){
       if (result.success == true){
         alert(result.message);
-        window.open('/eduwork/bajuku/public/transaction/struk/' + code_transaction, '_blank');
-        window.location.href = '/eduwork/bajuku/public/transaction/{{no_invoice()}}';
+        window.open("{{ url('transaction/struk') }}"+"/"+code_transaction,'_blank');
+        window.location.href = "{{ url('transaction') }}/{{ no_invoice() }}";
       }
     }
   });

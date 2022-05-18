@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\Transaction;
 use App\Models\Product;
 use App\Models\TransactionDetail;
@@ -40,9 +41,9 @@ class TransactionController extends Controller
     public function minus_qty($transaction_id){
             $transaction = Transaction::where('id',$transaction_id)->first();
         if($transaction->qty == 1){
-            echo "<script> alert('Cannot use minus function, because Qty Product less then 1')
-                           window.location.href = '/eduwork/bajuku/public/transaction/$transaction->code_transaction'
-                 </script>";
+          echo '<script> alert("Cannot min below 1 qty!")
+                         window.location.href = "'.route("transaction", $transaction->code_transaction).'";
+                </script>';
         } else {
             $product = Product::where('id',$transaction->product_id)->first();
 

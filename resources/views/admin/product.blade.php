@@ -82,7 +82,7 @@
                         </div>
                         <div class="form-group">
                             <label>Stock</label>
-                            <input placeholder="Stock of Product" type="text" class="form-control" name="tock" :value="data.stock" required="">
+                            <input placeholder="Stock of Product" type="text" class="form-control" name="stock" :value="data.stock" required="">
                         </div>
                         <div class="form-group">
                             <label>Price</label>
